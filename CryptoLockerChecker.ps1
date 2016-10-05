@@ -4,10 +4,10 @@
 #Check for Existing Files
 
 # Prompt for Information
-param(
-	[Paramater(Mandatory=$True)]
+Param(
+	[Parameter(Mandatory=$True)]
 		[string[]]$Path,
-	[Paramater(Mandatory=$True)]
+	[Parameter(Mandatory=$True)]
 		[string]$EncryptionExtension,
 	[Switch]$LeaveFiles,
 	[Switch]$Force,
@@ -45,7 +45,7 @@ if ($FilesDifference -eq 0)
 	Elseif ($FilesDifference -lt 0)
 		{Write-Error "More Clean Files than Encrypted files."}
 	Else
-		{Write-output "There are $FilesDifference extra encrypted files in the directory."
+		{Write-output "There are $FilesDifference extra encrypted files in the directory."}
 	
 #Create set of file names with Encrypted Extension
 $CleanFiles |
@@ -59,11 +59,11 @@ $CleanFilesWithExtension |
 		$Status = $EncryptedFiles -contains "$_"
 		if ($Status = $True) {
 			Write-Verbose "$_ found" |
-			Add-Content $Path\FoundFiles.txt
+			Add-Content $Path\Temp\FoundFiles.txt
 		}
 		Else {
 			Write-Output "$_ not present!" |
-			Add-Content $Path\MissingFiles.txt
+			Add-Content $Path\Temp\MissingFiles.txt
 		}
 	}
 		
@@ -73,4 +73,4 @@ if ($LeaveFiles -eq $False) {
 	Remove-Item $Path\Temp\CleanFilesWithExtension.txt
 }
 
-Write-Output "Operation Completed. A list of files with an encrypted analog are found in $Path\FoundFiles.txt. A list of all files without an encrypted analog can be found in $Path\MissingFiles.txt"
+Write-Output "Operation Completed. A list of files with an encrypted analog are found in $Path\Temp\FoundFiles.txt. A list of all files without an encrypted analog can be found in $Path\MissingFiles.txt"
